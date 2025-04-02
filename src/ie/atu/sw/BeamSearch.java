@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class BeamSearch<E> {
 
 	public void search(Node<E> node){
-		var beam = 3;
+		var beam = 2;
 		var fifo = new ArrayDeque<Node<E>>();
 		
 		fifo.offer(node);

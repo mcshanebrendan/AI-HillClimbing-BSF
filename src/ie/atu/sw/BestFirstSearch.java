@@ -13,6 +13,7 @@ public class BestFirstSearch<E> {
 		while (!queue.isEmpty()) {
 			node = queue.poll();
 			node.setVisited(true);
+			out.println("Expanding node: " + node.getData() + " (h=" + node.heuristic() + ")");
 
 			if (node.isGoal()){
 				getPath(node);
@@ -25,7 +26,8 @@ public class BestFirstSearch<E> {
 						queue.offer(child);
 					}
 				}
-				out.println(queue);
+				//out.println(queue);
+				printQueue(queue);
 			}
 		}
 	}
@@ -33,6 +35,7 @@ public class BestFirstSearch<E> {
 	private void getPath(Node<E> node) {
 		var total = 0.0d;
 		var path = new ArrayDeque<E>();
+		
 		while (node != null) {
 			path.push(node.getData());
 			var next = node.getParent();
@@ -41,10 +44,26 @@ public class BestFirstSearch<E> {
 			}
 			node = next;
 		}
-		out.println(path);
-		out.println("Distance: " + total);
+
+		out.println("Step-by-step path:");
+		for (E step : path) {
+			out.println(" -> " + step);
+		}
+
+		out.println("Start city: " + path.peekFirst());
+		out.println("Goal reached: " + path.peekLast());
+		out.println("Total distance: " + total);
 	}
-	
+
+
+	private void printQueue(PriorityQueue<Node<E>> queue) {
+		out.print("Queue now contains: ");
+		for (Node<E> n : queue) {
+			out.print(n.getData() + "(h=" + n.heuristic() + ") ");
+		}
+		out.println();
+	}
+
 	public static void main(String[] args) {
 		var greedy = new BestFirstSearch<String>();
 		greedy.search(new IrelandMap().getStartNode());
